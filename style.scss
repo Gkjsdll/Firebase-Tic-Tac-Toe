@@ -1,0 +1,172 @@
+.no-select {  /*Prevents the user from selecting text*/
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0,0,0,0.45);
+  visibility:hidden;
+  z-index: 2;
+  cursor: default;
+}
+
+body {
+  text-align: center;
+  background-color: #e0f1ff;
+  font-size: 0px;
+}
+
+.gameInfo{
+  margin-top: 32px;
+  font-family: Arial, sans-serif;
+}
+
+.gameArea {
+  width: 386px;
+  height: 386px;
+  font-size: 0px;
+  display: inline-block;
+  background-color: white;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.square {
+  width: 128px;
+  height: 128px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  font-size: 128px;
+  line-height: 128px;
+  font-family: 'Limelight', sans-serif;
+  position: absolute;
+  cursor: pointer;
+}
+
+#whoseTurn {
+  font-family: 'Limelight', sans-serif;
+  font-size: 36px;
+}
+
+#square1, #square4, #square7, #square2, #square5, #square8 {
+  border-right: 1px solid black;
+}
+
+#square1, #square2, #square3, #square4, #square5, #square6 {
+  border-bottom: 1px solid black;
+}
+
+.turnTime, .totalTime {
+  width: 50%;
+}
+
+.turn p{
+  display: inline-block;
+}
+
+#xWin, #oWin, #noWin {
+  position: absolute;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  right: 0px;
+  left: 0px;
+  top: 384px;
+  width: 384px;
+  height: 108px;
+  z-index: 5;
+  text-align: center;
+  visibility: hidden;
+  background-color: white;
+  border-radius: 12px;
+  cursor: default;
+}
+
+.winText{
+  font-size: 24px;
+  font-family: 'Limelight', sans-serif;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  right: 0px;
+  left: 0px;
+  z-index: 10;
+}
+
+.newGame {
+  display: inline-block;
+  position: absolute;
+  z-index: 10;
+  left: 140px;
+  top: 48px;
+  font-family: 'Limelight', sans-serif;
+  font-size: 18px;
+  border-width: 0px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.newGame:hover{
+  color:blue;
+}
+
+#xWin:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 32px;
+	top: 80px;
+	border: 25px solid;
+	border-color: transparent transparent transparent white;
+}
+
+
+#oWin:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	right: 32px;
+	top: 80px;
+	border: 25px solid;
+	border-color: transparent white transparent transparent;
+}
+
+#noWin:after {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	right: 32px;
+	top: 80px;
+	border: 25px solid;
+	border-color: transparent white transparent transparent;
+}
+
+#noWin:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 32px;
+	top: 80px;
+	border: 25px solid;
+	border-color: transparent transparent transparent white;
+}
