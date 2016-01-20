@@ -2,7 +2,7 @@ var gameOver = true;
 var whoseTurn = "X";
 var userRef, currentBoard, boardVals;
 
-var $squares, $gameStatus;
+var $squares, $gameStatus, $winner;
 
 var mainRef = new Firebase('https://gkjsdll-tic-tac-toe.firebaseio.com/');
 var amOnline = new Firebase('https://gkjsdll-tic-tac-toe.firebaseio.com/.info/connected');
@@ -43,6 +43,7 @@ $(document).ready(function(){
   boardVals = [];
   $squares = $('.square');
   $("#newGame").click(newGame)
+  $winner = $("#winner");
   $gameStatus = $("#gameStatus");
 
   for(var i = 0; i < $squares.length; i++){
@@ -193,6 +194,7 @@ function newBoard(){
 function newGame(){
   assignBoard();
   boardVals = [];
+  $winner.text("");
   gameOver = false;
 }
 
@@ -296,6 +298,6 @@ function checkSquares(sq1, sq2, sq3){
   }
   if(winner !== undefined){
     console.log(sq1, sq2, sq3)
-    $gameStatus.text(winner+" wins!");
+    $winner.text(winner+" wins!");
   }
 }
