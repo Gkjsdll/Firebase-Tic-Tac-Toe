@@ -170,3 +170,11 @@ body {
 	border: 25px solid;
 	border-color: transparent transparent transparent white;
 }
+
+#newGameContainer {
+  width: 100%;
+  min-width: 386px;
+  position: absolute;
+  top: 500px;
+  text-align: center;
+}

@@ -42,6 +42,8 @@ function nameAvailable(name){
 $(document).ready(function(){
 
   var $squares = $('.square');
+  $("#newGame").click(clearBoard)
+
 
   $squares.click(squareClickHandler);
 
@@ -50,7 +52,63 @@ $(document).ready(function(){
     $squares.eq(i).css('left', (i%3)*128+'px');
   }
 
+  newUsername();
+})
 
+function squareClickHandler(){ //must be adapted for firebase
+  if(!gameOver){
+    var $this = $(this);
+    if($this.text() === ""){
+      var square = $(this).attr('id')
+      var boardSquare = {};
+      boardSquare[square] = whoseTurn;
+      mainRef.child("board").update(boardSquare);
+      $this.css("cursor","default");
+      switch(whoseTurn){
+        case "X":
+        whoseTurn = "O";
+        break;
+        case "O":
+        whoseTurn = "X";
+        break;
+      }
+      // checkWin($this);
+    }
+  }
+};
+
+mainRef.child("board").on("value", function(squares){
+  squares.forEach(function(square){
+    var whichSquare = $('#'+square.key())
+    switch(square.val()){
+      case "X":
+        whichSquare.text("X");
+        whichSquare.css("cursor", "default");
+        break;
+      case "O":
+      whichSquare.text("O");
+        whichSquare.css("cursor", "default");
+        break;
+      default:
+        whichSquare.text("");
+        whichSquare.css("cursor", "pointer");
+        break;
+    }
+  });
+});
+
+function clearBoard(){
+  mainRef.child("board").once("value", function(squares){
+    squares.forEach(function(square){
+      var key = square.key();
+      var boardSquare = {};
+      boardSquare[key] = "Empty";
+      mainRef.child("board").update(boardSquare);
+    });
+  });
+}
+
+function newUsername(){
   if(!localStorage.username){
     swal({
       title: "Enter a Username",
@@ -66,23 +124,4 @@ $(document).ready(function(){
     checkOnline(localStorage.username);
     gameOver = false;
   }
-})
-
-function squareClickHandler(){ //must be adapted for firebase
-  if(!gameOver){
-    var $this = $(this);
-    if($this.text() === ""){
-      $this.text(whoseTurn);
-      $this.css("cursor","default");
-      switch(whoseTurn){
-        case "X":
-          whoseTurn = "O";
-          break;
-        case "O":
-          whoseTurn = "X";
-          break;
-      }
-      // checkWin($this);
-    }
-  }
-};
+}
