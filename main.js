@@ -174,12 +174,7 @@ function newBoard(){
 }
 
 function newGame(){
-  mainRef.child("boards").limitToLast(1).once("value", function(snap){
-    for(var i in snap.val()){
-
-    };
-    debugger;
-  });
+  assignBoard();
 }
 
 function assignBoard(){
@@ -190,6 +185,7 @@ function assignBoard(){
         var users = 0;
         for(var i in snap.val()){
           if(i !== localStorage.username) users++;
+          if(currentBoard === key) users = 2;
         }
         if(users < 2){
           var thisUser = {};
@@ -203,6 +199,7 @@ function assignBoard(){
               localStorage.player = "O";
               break;
           }
+          mainRef.child("boards").child(currentBoard+"/squares/").off();
           boardRef.child("users").update(thisUser);
           mainRef.child("users").child(localStorage.username).update({"board": key});
           watchBoard();
