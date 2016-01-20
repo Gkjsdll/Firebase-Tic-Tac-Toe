@@ -72,109 +72,15 @@ body {
   border-bottom: 1px solid black;
 }
 
-.turnTime, .totalTime {
-  width: 50%;
-}
-
-.turn p{
-  display: inline-block;
-}
-
-#xWin, #oWin, #noWin {
-  position: absolute;
-  display: inline-block;
-  margin-left: auto;
-  margin-right: auto;
-  right: 0px;
-  left: 0px;
-  top: 384px;
-  width: 384px;
-  height: 108px;
-  z-index: 5;
-  text-align: center;
-  visibility: hidden;
-  background-color: white;
-  border-radius: 12px;
-  cursor: default;
-}
-
-.winText{
-  font-size: 24px;
-  font-family: 'Limelight', sans-serif;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  right: 0px;
-  left: 0px;
-  z-index: 10;
-}
-
-.newGame {
-  display: inline-block;
-  position: absolute;
-  z-index: 10;
-  left: 140px;
-  top: 48px;
-  font-family: 'Limelight', sans-serif;
-  font-size: 18px;
-  border-width: 0px;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.newGame:hover{
-  color:blue;
-}
-
-#xWin:before {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	left: 32px;
-	top: 80px;
-	border: 25px solid;
-	border-color: transparent transparent transparent white;
-}
-
-
-#oWin:before {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	right: 32px;
-	top: 80px;
-	border: 25px solid;
-	border-color: transparent white transparent transparent;
-}
-
-#noWin:after {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	right: 32px;
-	top: 80px;
-	border: 25px solid;
-	border-color: transparent white transparent transparent;
-}
-
-#noWin:before {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	left: 32px;
-	top: 80px;
-	border: 25px solid;
-	border-color: transparent transparent transparent white;
-}
-
 #newGameContainer {
   width: 100%;
   min-width: 386px;
   position: absolute;
   top: 500px;
   text-align: center;
+}
+
+#honor {
+  font-size: 24px;
+  min-width: 386px;
 }
