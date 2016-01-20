@@ -134,7 +134,6 @@ function watchBoard(){
           whichSquare.css("cursor", "default");
           localStorage.turnsTaken = Number(localStorage.turnsTaken) + 1;
           boardVals[Number(whichSquare.attr("id").slice(-1))-1] = "X";
-          debugger;
           checkWin(whichSquare);
           break;
         case "O":
@@ -142,7 +141,6 @@ function watchBoard(){
           whichSquare.css("cursor", "default");
           localStorage.turnsTaken = Number(localStorage.turnsTaken) + 1;
           boardVals[Number(whichSquare.attr("id").slice(-1))-1] = "O";
-          debugger;
           checkWin(whichSquare);
           break;
         default:
@@ -291,13 +289,11 @@ function noWin(){
 }
 
 function checkSquares(sq1, sq2, sq3){
-  debugger;
   var winner;
   if(boardVals[sq1] === boardVals[sq2] && boardVals[sq2] == boardVals[sq3]){
     winner = boardVals[sq1];
   }
   if(winner !== undefined){
-    console.log(sq1, sq2, sq3)
     $winner.text(winner+" wins!");
   }
 }
