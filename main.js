@@ -52,25 +52,29 @@ $(document).ready(function(){
 })
 
 function squareClickHandler(){ //must be adapted for firebase
-  debugger;
-  if(!gameOver){
-    var $this = $(this);
-    if($this.text() === ""){
-      var square = $(this).attr('id')
-      var boardSquare = {};
-      boardSquare[square] = whoseTurn;
-      mainRef.child("boards").child(currentBoard+"/squares/").update(boardSquare);
-      $this.css("cursor","default");
-      switch(whoseTurn){
-        case "X":
-        whoseTurn = "O";
-        break;
-        case "O":
-        whoseTurn = "X";
-        break;
+  var $this = $(this);
+  mainRef.child("boards/"+currentBoard).once("value", function(snap){
+    if(!gameOver && snap.val()["whoseTurn"] === localStorage.player){
+      if($this.text() === ""){
+        debugger;
+        var square = $this.attr('id')
+        var boardSquare = {};
+        boardSquare[square] = localStorage.player;
+        mainRef.child("boards").child(currentBoard+"/squares/").update(boardSquare);
+        $this.css("cursor","default");
       }
+      var whoseturn;
+      switch(snap.val()["whoseTurn"]){
+        case "X":
+          whoseturn = "O";
+          break;
+        case "O":
+        whoseturn = "X";
+          break;
+      }
+      mainRef.child("boards/"+currentBoard).update({"whoseTurn": whoseturn});
     }
-  }
+  });
 };
 
 function initUsername(){
@@ -144,10 +148,8 @@ function newBoard(){
   square7: "Empty",
   square8: "Empty",
   square9: "Empty"};
-  var turn = {};
-  turn["whoseTurn"] = "X";
   var boardData = {};
-  boardData["whoseTurn"] = turn;
+  boardData["whoseTurn"] = "X";
   boardData["squares"] = board;
   mainRef.child("boards").push(boardData);
   mainRef.child("users").child(localStorage.username).once("value", function(snap){
@@ -161,6 +163,7 @@ function newBoard(){
         mainRef.child("users").child(localStorage.username).update({"board": key});
         var playerX = {};
         playerX[localStorage.username] = "X";
+        localStorage.player = "X";
         mainRef.child("boards/"+key).child("users").update(playerX);
         currentBoard = key;
         watchBoard();
@@ -193,13 +196,16 @@ function assignBoard(){
           switch (users){
             case 0:
               thisUser[localStorage.username] = "X";
+              localStorage.player = "X";
               break;
             case 1:
               thisUser[localStorage.username] = "O";
+              localStorage.player = "O";
               break;
           }
           boardRef.child("users").update(thisUser);
           mainRef.child("users").child(localStorage.username).update({"board": key});
+          watchBoard();
         }
         else{
           newBoard();
