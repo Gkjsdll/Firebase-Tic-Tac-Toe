@@ -117,16 +117,19 @@ function getBoard(){
 
 function watchBoard(){
   mainRef.child("boards").child(currentBoard+"/squares/").on("value", function(squares){
+    localStorage.turnsTaken = 0;
     squares.forEach(function(square){
       var whichSquare = $('#'+square.key())
       switch(square.val()){
         case "X":
           whichSquare.text("X");
           whichSquare.css("cursor", "default");
+          localStorage.turnsTaken = Number(localStorage.turnsTaken) + 1;
           break;
         case "O":
         whichSquare.text("O");
           whichSquare.css("cursor", "default");
+          localStorage.turnsTaken = Number(localStorage.turnsTaken) + 1;
           break;
         default:
           whichSquare.text("");
@@ -150,6 +153,8 @@ function newBoard(){
   var boardData = {};
   boardData["whoseTurn"] = "X";
   boardData["squares"] = board;
+  boardData["turnsTaken"] = 0;
+  localStorage.turnsTaken = 0;
   mainRef.child("boards").push(boardData);
   mainRef.child("users").child(localStorage.username).once("value", function(snap){
     if(currentBoard){
