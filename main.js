@@ -1,8 +1,8 @@
 var gameOver = true;
 var whoseTurn = "X";
-var userRef, currentBoard;
+var userRef, currentBoard, boardVals;
 
-var $squares;
+var $squares, $gameStatus;
 
 var mainRef = new Firebase('https://gkjsdll-tic-tac-toe.firebaseio.com/');
 var amOnline = new Firebase('https://gkjsdll-tic-tac-toe.firebaseio.com/.info/connected');
@@ -40,8 +40,10 @@ function nameAvailable(name){
 
 $(document).ready(function(){
 
+  boardVals = [];
   $squares = $('.square');
   $("#newGame").click(newGame)
+  $gameStatus = $("#gameStatus");
 
   for(var i = 0; i < $squares.length; i++){
     $squares.eq(i).css('top', Math.floor(i/3)*128+'px');
@@ -116,6 +118,11 @@ function getBoard(){
 }
 
 function watchBoard(){
+  var currTurn;
+  mainRef.child("boards/"+currentBoard).on("value", function(snap){
+    currTurn = snap.val()["whoseTurn"];
+    $gameStatus.text("It is "+currTurn+"\'s turn. You are "+localStorage.player+".");
+  })
   mainRef.child("boards").child(currentBoard+"/squares/").on("value", function(squares){
     localStorage.turnsTaken = 0;
     squares.forEach(function(square){
@@ -125,11 +132,17 @@ function watchBoard(){
           whichSquare.text("X");
           whichSquare.css("cursor", "default");
           localStorage.turnsTaken = Number(localStorage.turnsTaken) + 1;
+          boardVals[Number(whichSquare.attr("id").slice(-1))-1] = "X";
+          debugger;
+          checkWin(whichSquare);
           break;
         case "O":
         whichSquare.text("O");
           whichSquare.css("cursor", "default");
           localStorage.turnsTaken = Number(localStorage.turnsTaken) + 1;
+          boardVals[Number(whichSquare.attr("id").slice(-1))-1] = "O";
+          debugger;
+          checkWin(whichSquare);
           break;
         default:
           whichSquare.text("");
@@ -179,6 +192,7 @@ function newBoard(){
 
 function newGame(){
   assignBoard();
+  boardVals = [];
   gameOver = false;
 }
 
@@ -219,56 +233,69 @@ function assignBoard(){
 }
 
 
-function checkWin($square){
-  spacesRemaining--;
-  switch($square.index()){
+function checkWin(checking){
+  var square = Number(checking.attr('id').slice(-1));
+  switch(square){
     case 0:
-      checkSquares(1,2);
-      checkSquares(3,6);
-      checkSquares(4,8);
+      checkSquares(0,1,2);
+      checkSquares(0,3,6);
+      checkSquares(0,4,8);
       break;
     case 1:
-      checkSquares(0,2);
-      checkSquares(4,7);
+      checkSquares(0,1,2);
+      checkSquares(1,4,7);
       break;
     case 2:
-      checkSquares(0,1);
-      checkSquares(4,6);
-      checkSquares(5,8);
+      checkSquares(0,1,2);
+      checkSquares(2,4,6);
+      checkSquares(2,5,8);
       break;
     case 3:
-      checkSquares(0,6);
-      checkSquares(4,5);
+      checkSquares(0,3,6);
+      checkSquares(3,4,5);
       break;
     case 4:
       for(var i = 0; i < 4; i++){
-        checkSquares(i, 8-i);
+        checkSquares(i, 4, 8-i);
       }
       break;
     case 5:
-      checkSquares(2,8);
-      checkSquares(3,4);
+      checkSquares(2,5,8);
+      checkSquares(3,4,5);
       break;
     case 6:
-      checkSquares(0,3);
-      checkSquares(2,4);
-      checkSquares(7,8);
+      checkSquares(0,3,6);
+      checkSquares(2,4,6);
+      checkSquares(7,8,6);
       break;
     case 7:
-      checkSquares(1,4);
-      checkSquares(6,8);
+      checkSquares(1,4,7);
+      checkSquares(6,8,7);
       break;
     case 8:
-      checkSquares(0,4);
-      checkSquares(2,5);
-      checkSquares(6,7);
+      checkSquares(0,4,8);
+      checkSquares(2,5,8);
+      checkSquares(6,7,8);
       break;
   }
-  if(!spacesRemaining && !gameOver){
+  if(localStorage.turnsTaken === 9 && !gameOver){
     noWin();
   }
 };
 
 function noWin(){
+  alert("It's a draw!");
   gameOver = true;
+}
+
+function checkSquares(sq1, sq2, sq3){
+  debugger;
+  var winner;
+  if(boardVals[sq1] === boardVals[sq2] && boardVals[sq2] == boardVals[sq3]){
+    winner = boardVals[sq1];
+  }
+  if(winner !== undefined){
+    console.log(sq1, sq2, sq3)
+    $gameStatus.text(winner+" wins!");
+  }
 }
